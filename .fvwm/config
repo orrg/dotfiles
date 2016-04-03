@@ -1,0 +1,175 @@
+
+# set gnome wallpaper
+# gsettings set org.gnome.desktop.background picture-uri "file:///path/to/wallpaper.jpg"
+
+SetEnv FVWM_TERM urxvt
+SetEnv FVWM_BG /home/oliver/.wallpapers/Highway1.png
+
+DesktopSize 4x1
+DesktopName 0
+EwmhNumberOfDesktops 1
+EdgeResistance -1
+HideGeometryWindow Move, Resize
+
+DefaultFont "xft:Ubuntu:size=10:antialias=true:hinting=slight"
+
+# Menu style
+Colorset 1 fg #000000, DGradient 128 #E8E2D6 #C4C1BA
+Colorset 2 fg #FFFFFF, DGradient 128 #008ED6 #0054A0
+MenuStyle * Animation, Hilight3DOff, HilightBack
+MenuStyle * MenuColorset 1, ActiveColorset 2, ActiveFore
+MenuStyle * BorderWidth 0, SeparatorsLong, TrianglesSolid
+MenuStyle * Font "xft:Ubuntu:size=12:antialias=true:hinting=slight"
+MenuStyle * VerticalMargins 40
+MenuStyle * ItemFormat "%.2|%12.20l%2.2>%2.|"
+MenuStyle * AutomaticHotkeys
+MenuStyle * PopupOffset 132 0
+
+MenuStyle WindowList ItemFormat "%2.0|%4.4l%0.2|"
+MenuStyle WindowList MenuColorset 1, ActiveColorset 2, ActiveFore
+MenuStyle WindowList BorderWidth 0, Hilight3DOff, HilightBack
+MenuStyle WindowList Font "xft:Ubuntu:size=11:antialias=true:hinting:slight"
+
+# Window style
+Colorset 21 fg #000000, hi #FFFFFF, sh #A39687, DGradient 128 #E5DBCC #CCC1B2
+Colorset 22 fg #DDD1C1, hi #96897A, sh #3D332B, DGradient 128 #6D5E51 #827263
+
+TitleStyle LeftJustified Height 22
+TitleStyle Active Colorset 21 -- Flat
+TitleStyle Inactive Colorset 22 -- Flat
+BorderStyle Active Colorset 21 -- HiddenHandles NoInset
+BorderStyle Inactive Colorset 22 -- HiddenHandles NoInset
+
+# Default window style
+Style * BorderWidth 2, HandleWidth 2
+Style * FvwmBorder, FvwmButtons
+Style * SmartPlacement, FPGrabFocus, FPGrabFocusTransient
+Style * FPSortWindowListByFocus, FPEnterToFocus
+Stlye * SnapGrid 2 2, SnapAttraction 3
+Style * DecorateTransient
+Style * NoIcon
+Style * TitleFormat %c: %n
+
+Style conky* !Title, StaysOnBottom, !Handles, !Borders
+
+# Buttons config
+Colorset 50 RootTransparent
+Colorset 51 RootTransparent, Tint #000000 20, fg #FFFFFF, sh #FFFFFF
+Colorset 52 RootTransparent, Tint #FFFFFF 20
+Colorset 53 fg #DDD1C1, hi #96897A, sh #3D332B, DGradient 128 #6D5E51 #827263
+Colorset 54 fg #000000, hi #E8D2E6, sh #A39687, DGradient 128 #E5DBCC #CCC1B2
+
+Style FvwmButtons* !Title, !Handle, !Borders
+Style FvwmButtons* Sticky, WindowListSkip, CirculateSkip, StaysOnBottom
+*FvmwButtons: Rows 1
+*FvwmButtons: Columns 5
+*FvmwButtons: Frame 0
+*FvwmButtons: Geometry 240x30
+*FvwmButtons: Colorset 50
+*FvwmButtons: (5x1, Frame 0, Swallow "FvwmPager" "FvwmPager 0 0")
+
+Style FvwmPager* NoTitle
+Style FvwmPager* Sticky, NeverFocus, StaysOnBottom
+Style FvwmPager* WindowListSkip, CirculateSkip
+*FvwmPager: DesktopScale 20
+*FvwmPager: Font "none"
+*FvwmPager: UseSkipList
+*FvwmPager: !MiniIcons
+*FvwmPager: Window3DBorders
+*FvwmPager: Colorset * 51
+*FvwmPager: HilightColorset * 52
+*FvwmPager: WindowColorsets 53 54
+
+# Window Panel
+Colorset 40 fg #008ED6, DGradient 128 #E8E2D6 #C4C1BA
+Colorset 41 fg #686663, DGradient 128 #E8E2D6 #C4C1BA
+Colorset 42 fg #FFFFFF, DGradient 128 #008ED6 #0054A0
+Colorset 43 fg #008ED6, DGradient 128 #C4C1BA #E8E2D6
+Colorset 44 fg #FF5416, DGradient 128 #E8E2D6 #C4C1BA
+
+Style WindowPanel* !Title, !Handles, !Borders
+Style WindowPanel* Sticky, WindowListSkip, CirculateSkip, StaysOnBottom
+*WindowPanel: Rows 1
+*WindowPanel: (Frame 0, Swallow (SwallowNew) FvwmIconMan 'Module FvwmIconMan InlineIconBar')
+
+*InlineIconBar: ManagerGeometry 1x20
+*InlineIconBar: ReliefThickness 0
+*InlineIconBar: UseWinList true
+*InlineIconBar: DrawIcons false
+*InlineIconBar: Title ""
+*InlineIconBar: Format %t
+*InlineIconBar: FollowFocus true
+*InlineIconBar: Font "xft:Ubuntu:size=10:antialias=true:hinting=slight"
+*InlineIconBar: Colorset 40
+*InlineIconBar: PlainColorset 41
+*InlineIconBar: FocusColorset 42
+*InlineIconBar: SelectColorset 43
+*InlineIconBar: IconColorset 44
+*InlineIconBar: Action Mouse 1 N sendcommand Iconify
+
+# Functions section
+DestroyFunc InitFunction
+AddToFunc InitFunction
+ + I Exec exec gnome-settings-daemon
+ + I Exec exec conky -q -d
+
+DestroyFunc StartFunction
+AddToFunc StartFunction
+ + I Exec exec setxkbmap de
+ + I Exec fvwm-root -r $FVWM_BG
+ + I Module FvwmButtons
+ + I Module FvwmButtons WindowPanel -g 1280x19+200+1029
+ + I Module FvwmAuto 300 -menter "Silent Raise"
+
+DestroyFunc EWMHActiveWindowFunc
+AddToFunc EWMHActiveWindowFunc
+ + I Iconify Off
+ + I Focus
+ + I Raise
+ + WarpToWindow 50 50
+
+# Menu section
+DestroyMenu AppsMenu
+AddToMenu AppsMenu
+ + "Blender"     Exec exec blender
+ + "Calc"        Exec exec localc
+ + "Calculator"  Exec exec gnome-calculator
+ + "Chromium"    Exec exec chromium-browser
+ + "Draw"        Exec exec lodraw
+ + "Gimp"        Exec exec gimp
+ + "Impress"     Exec exec loimpress
+ + "Inkscape"    Exec exec inkscape
+ + "Writer"      Exec exec lowriter
+ + "Rhythmbox"   Exec exec rhythmbox
+ + "Settings"    Exec exec unity-control-center
+ + "Shotwell"    Exec exec shotwell
+ + "Texworks"    Exec exec texworks
+
+DestroyMenu RootMenu
+AddToMenu RootMenu
+ + "firefox"     Exec exec firefox
+ + "thunderbird" Exec exec thunderbird
+ + "gvim"        Exec exec gvim
+ + "nautilus"    Exec exec nautilus --no-desktop
+ + ""            Nop
+ + "Programme"   Popup AppsMenu
+ + ""            Nop
+ + "restart"     Restart
+ + "quit"        Quit 
+ + "shutdown"    Exec exec poweroff
+
+# Keyboard configuration
+Key m                    A  M  Menu RootMenu
+Key Return               A  M  Exec exec $FVWM_TERM
+Key Right                A  CM Scroll 100000 0
+Key Left                 A  CM Scroll -100000 0
+Key i                    A  C  Iconify
+Key m                    A  C  Maximize
+Key w                    TW C  Close 
+Key XF86AudioLowerVolume A  N  Exec exec pactl set-sink-volume 1 -5%
+Key XF86AudioRaiseVolume A  N  Exec exec pactl set-sink-volume 1 +5%
+Key XF86AudioMute        A  N  Exec exec pactl set-sink-mute 1 toggle
+Key Tab                  A  M  WindowList NoGeometry, CurrentAtEnd, NoCurrentDeskTitle
+  
+# Mouse configuration
+Mouse 1 R A Menu RootMenu

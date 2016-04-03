@@ -1,0 +1,57 @@
+# Conky configuration script.
+
+# Locale, fonts and font sizes.
+use_xft yes
+xftfont Droid Sans:size=9
+override_utf8_locale yes
+
+# Conky performance
+update_interval 2
+total_run_times 0
+double_buffer yes
+no_buffers yes
+net_avg_samples 2
+text_buffer_size 1024
+top_name_width 22
+
+# Execute it in its own window
+own_window yes
+own_window_transparent yes
+own_window_type conky
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+
+# Font colors
+default_color 666666 # mid grey
+
+# Header colors
+color0 EAEAEA # light grey
+color1 FFA300 # pale orange
+
+# Conky positioning, roughly centred.
+minimum_size 240 600
+maximum_width 240
+alignment top_right
+gap_x 5
+gap_y 5
+
+default_bar_size 100 5
+pad_percents 1
+short_units true
+
+TEXT
+${color0}${font DejaVu Sans:pixelsize=80}${time %H:%M}${font}
+${color1}${offset 8}${font DejaVu Sans:pixelsize=28}${time %d}\
+${color0}${offset 2}${font Droid Sans:pixelsize=22}${time %B %Y}
+${offset 8}${font DejaVu Sans:pixelsize=28}${time %A}${font}
+${voffset 10}${offset 8}${nodename} running on ${kernel}
+${voffset 10}${offset 8}${color0}${font}${wireless_essid wlan0}: ${wireless_link_qual wlan0}%
+${offset 8}IP:${tab 24}${addr wlan0}
+${offset 8}Speed:${tab 24}${upspeed wlan0} up / ${downspeed wlan0} down
+${voffset 10}${offset 8}CPU:${tab 24}${cpubar 8,100 cpu0}${tab 4}${cpu 0}%
+${offset 8}MEM:${tab 24}${membar 8,100}${tab 4}${memperc}%
+${offset 8}SWAP:${tab 24}${swapbar 8,100}${tab 4}${swapperc}%
+${voffset 10}${offset 8}PID${tab 22}CPU%${tab 22}MEM%${tab 22}Name
+${offset 8}${top pid 1}${tab 22}${top cpu 1}${tab 22}${top mem 1}${tab 22}${top name 1}
+${offset 8}${top pid 2}${tab 22}${top cpu 2}${tab 22}${top mem 2}${tab 22}${top name 2}
+${offset 8}${top pid 3}${tab 22}${top cpu 3}${tab 22}${top mem 3}${tab 22}${top name 3}
+${offset 8}${top pid 4}${tab 22}${top cpu 4}${tab 22}${top mem 4}${tab 22}${top name 4}
